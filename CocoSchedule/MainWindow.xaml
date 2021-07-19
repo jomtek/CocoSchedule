@@ -1,0 +1,201 @@
+﻿<Window x:Class="CocoSchedule.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CocoSchedule"
+        mc:Ignorable="d"
+        Title="CocoSchedule"
+        Width="800" Height="550" MinWidth="875" MinHeight="520" SizeChanged="Window_SizeChanged">
+
+    <Window.CommandBindings>
+        <CommandBinding Command="local:Command.TableZoomPlusCmd" Executed="TableZoomPlus_Executed" />
+        <CommandBinding Command="local:Command.TableZoomMinusCmd" Executed="TableZoomMinus_Executed" />
+    </Window.CommandBindings>
+
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Control" Key="Add" Command="local:Command.TableZoomPlusCmd" />
+        <KeyBinding Modifiers="Control" Key="Subtract" Command="local:Command.TableZoomMinusCmd" />
+    </Window.InputBindings>
+
+    <Window.Resources>
+        <ContextMenu x:Key="CMenu">
+            <MenuItem Header="Add task" x:Name="AddTaskCMItem" Click="AddTaskCMItem_Click"/>
+            <MenuItem Header="Add deadline" IsEnabled="False" x:Name="AddDeadlineCMItem" Click="AddDeadlineCMItem_Click"/>
+        </ContextMenu>
+    </Window.Resources>
+
+    <Grid>
+        <ScrollViewer x:Name="MainSV" Margin="25,30,5,15" Background="Black">
+            <Grid x:Name="TimeTableGrid" Background="#FFEAEAEA">
+                <Grid.Effect>
+                    <DropShadowEffect BlurRadius="8" Opacity="0.4" ShadowDepth="4"/>
+                </Grid.Effect>
+                <Grid x:Name="TableGrid" Margin="80,30,0,0" MouseDown="TableGrid_MouseDown">
+                    <Border
+                        x:Name="TableGridBorder"
+                        BorderBrush="Black"
+                        BorderThickness="1.5" />
+
+                    <!-- Table base -->
+                    <Grid x:Name="TableBaseGrid" Margin="0">
+                        <Grid Margin="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Path Grid.Column="0" Data="M80,0 L80,369" Stretch="Fill" Stroke="Black" StrokeThickness="1" HorizontalAlignment="Right"/>
+                            <Path Grid.Column="1" Data="M80,0 L80,369" Stretch="Fill" Stroke="Black" StrokeThickness="1" HorizontalAlignment="Right"/>
+                            <Path Grid.Column="2" Data="M80,0 L80,369" Stretch="Fill" Stroke="Black" StrokeThickness="1" HorizontalAlignment="Right"/>
+                            <Path Grid.Column="3" Data="M80,0 L80,369" Stretch="Fill" Stroke="Black" StrokeThickness="1" HorizontalAlignment="Right"/>
+                            <Path Grid.Column="4" Data="M80,0 L80,369" Stretch="Fill" Stroke="Black" StrokeThickness="1" HorizontalAlignment="Right"/>
+                            <Path Grid.Column="5" Data="M80,0 L80,369" Stretch="Fill" Stroke="Black" StrokeThickness="1" HorizontalAlignment="Right"/>
+                        </Grid>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <Path Grid.Row="0"  Data="M0,56.285714 L742,56.285714" Stretch="Fill" Stroke="Black" StrokeThickness="1" VerticalAlignment="Bottom"/>
+                            <Path Grid.Row="1"  Data="M0,56.285714 L742,56.285714" Stretch="Fill" Stroke="Black" StrokeThickness="1" VerticalAlignment="Bottom"/>
+                            <Path Grid.Row="2"  Data="M0,56.285714 L742,56.285714" Stretch="Fill" Stroke="Black" StrokeThickness="1" VerticalAlignment="Bottom"/>
+                            <Path Grid.Row="3"  Data="M0,56.285714 L742,56.285714" Stretch="Fill" Stroke="Black" StrokeThickness="1" VerticalAlignment="Bottom"/>
+                            <Path Grid.Row="4"  Data="M0,56.285714 L742,56.285714" Stretch="Fill" Stroke="Black" StrokeThickness="1" VerticalAlignment="Bottom"/>
+                            <Path Grid.Row="5"  Data="M0,56.285714 L742,56.285714" Stretch="Fill" Stroke="Black" StrokeThickness="1" VerticalAlignment="Bottom"/>
+                            <Path Grid.Row="6"  Data="M0,56.285714 L742,56.285714" Stretch="Fill" Stroke="Black" StrokeThickness="1" VerticalAlignment="Bottom"/>
+                            <Path Grid.Row="7"  Data="M0,56.285714 L742,56.285714" Stretch="Fill" Stroke="Black" StrokeThickness="1" VerticalAlignment="Bottom"/>
+                            <Path Grid.Row="8"  Data="M0,56.285714 L742,56.285714" Stretch="Fill" Stroke="Black" StrokeThickness="1" VerticalAlignment="Bottom"/>
+                            <Path Grid.Row="9"  Data="M0,56.285714 L742,56.285714" Stretch="Fill" Stroke="Black" StrokeThickness="1" VerticalAlignment="Bottom"/>
+                            <Path Grid.Row="10" Data="M0,56.285714 L742,56.285714" Stretch="Fill" Stroke="Black" StrokeThickness="1" VerticalAlignment="Bottom"/>
+                            <Path Grid.Row="11" Data="M0,56.285714 L742,56.285714" Stretch="Fill" Stroke="Black" StrokeThickness="1" VerticalAlignment="Bottom"/>
+                            <Path Grid.Row="12" Data="M0,56.285714 L742,56.285714" Stretch="Fill" Stroke="Black" StrokeThickness="1" VerticalAlignment="Bottom"/>
+                            <Path Grid.Row="13" Data="M0,56.285714 L742,56.285714" Stretch="Fill" Stroke="Black" StrokeThickness="1" VerticalAlignment="Bottom"/>
+                            <Path Grid.Row="14" Data="M0,56.285714 L742,56.285714" Stretch="Fill" Stroke="Black" StrokeThickness="1" VerticalAlignment="Bottom"/>
+                            <Path Grid.Row="15" Data="M0,56.285714 L742,56.285714" Stretch="Fill" Stroke="Black" StrokeThickness="1" VerticalAlignment="Bottom"/>
+                            <Path Grid.Row="16" Data="M0,56.285714 L742,56.285714" Stretch="Fill" Stroke="Black" StrokeThickness="1" VerticalAlignment="Bottom"/>
+                        </Grid>
+                    </Grid>
+
+                    <Grid x:Name="DaysGrid">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- https://stackoverflow.com/questions/34780046/wpf-contextmenu-of-parent-control-opens-on-child-control-with-own-contextmenu-->
+
+                        <Grid Grid.Column="0" Background="Transparent" MouseRightButtonDown="DayGrid_MouseRightButtonDown" x:Name="MondayGrid"    />
+                        <Grid Grid.Column="1" Background="Transparent" MouseRightButtonDown="DayGrid_MouseRightButtonDown" x:Name="TuesdayGrid"   />
+                        <Grid Grid.Column="2" Background="Transparent" MouseRightButtonDown="DayGrid_MouseRightButtonDown" x:Name="WednesdayGrid" />
+                        <Grid Grid.Column="3" Background="Transparent" MouseRightButtonDown="DayGrid_MouseRightButtonDown" x:Name="ThursdayGrid"  />
+                        <Grid Grid.Column="4" Background="Transparent" MouseRightButtonDown="DayGrid_MouseRightButtonDown" x:Name="FridayGrid"    />
+                        <Grid Grid.Column="5" Background="Transparent" MouseRightButtonDown="DayGrid_MouseRightButtonDown" x:Name="SaturdayGrid"  />
+                        <Grid Grid.Column="6" Background="Transparent" MouseRightButtonDown="DayGrid_MouseRightButtonDown" x:Name="SundayGrid"    />
+                    </Grid>
+                </Grid>
+                <Grid x:Name="LeftGrid" HorizontalAlignment="Left" Margin="0,30,0,0" Background="#FF92999B" Width="80">
+                    <Grid x:Name="DefaultTimeAnnotationsGrid" HorizontalAlignment="Right" Width="Auto">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="6 AM"/></TextBlock>
+                        <TextBlock Grid.Row="1"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="7 AM"/></TextBlock>
+                        <TextBlock Grid.Row="2"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="8 AM"/></TextBlock>
+                        <TextBlock Grid.Row="3"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="9 AM"/></TextBlock>
+                        <TextBlock Grid.Row="4"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="10 AM"/></TextBlock>
+                        <TextBlock Grid.Row="5"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="11 AM"/></TextBlock>
+                        <TextBlock Grid.Row="6"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="12 PM"/></TextBlock>
+                        <TextBlock Grid.Row="7"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="1 PM"/></TextBlock>
+                        <TextBlock Grid.Row="8"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="2 PM"/></TextBlock>
+                        <TextBlock Grid.Row="9"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="3 PM"/></TextBlock>
+                        <TextBlock Grid.Row="10" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="4 PM"/></TextBlock>
+                        <TextBlock Grid.Row="11" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="5 PM"/></TextBlock>
+                        <TextBlock Grid.Row="12" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="6 PM"/></TextBlock>
+                        <TextBlock Grid.Row="13" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="7 PM"/></TextBlock>
+                        <TextBlock Grid.Row="14" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="8 PM"/></TextBlock>
+                        <TextBlock Grid.Row="15" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="9 PM"/></TextBlock>
+                        <TextBlock Grid.Row="16" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="10 PM"/></TextBlock>
+                        <TextBlock Grid.Row="17" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="11 PM"/></TextBlock>
+                    </Grid>
+                    <Grid x:Name="OtherTimeAnnotationsGrid" HorizontalAlignment="Right" Width="Auto" Margin="0,0,15,0" Opacity="0.7" >
+                        <TextBlock Grid.Row="0"  Margin="0,4,30,0" HorizontalAlignment="Right" FontFamily="Montserrat" FontSize="13"><Run Text="6 AM"/></TextBlock>
+                    </Grid>
+                </Grid>
+
+                <!-- Table annotations -->
+
+                <Grid x:Name="TopGrid" Background="#FF92999B" Height="30" Margin="80,0,0,0" VerticalAlignment="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontFamily="Montserrat" Text="Monday" Padding="5,2" />
+                    <TextBlock Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontFamily="Montserrat" Text="Tuesday" Padding="5,2" />
+                    <TextBlock Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontFamily="Montserrat" Text="Wednesday" Padding="5,2" />
+                    <TextBlock Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontFamily="Montserrat" Text="Thursday" Padding="5,2" />
+                    <TextBlock Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontFamily="Montserrat" Text="Friday" Padding="5,2" />
+                    <TextBlock Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontFamily="Montserrat" Text="Saturday" Padding="5,2" />
+                    <TextBlock Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontFamily="Montserrat" Text="Sunday" Padding="5,2" />
+                </Grid>
+                <Path x:Name="TimeLinePath" Data="M-18.666667,316.33333 L-8.3333333,316.33333" Margin="25,200,0,0" Stretch="Fill" Stroke="#FF1C4600" VerticalAlignment="Top" StrokeThickness="3" StrokeStartLineCap="Round" StrokeEndLineCap="Square" HorizontalAlignment="Right"/>
+                <Path x:Name="TimeIndicationPath1" Data="M-18.666667,316.33333 L-8.3333333,316.33333" Margin="20,125,0,0" Stretch="Fill" Stroke="#FF557BFF" VerticalAlignment="Top" StrokeThickness="3.5" StrokeStartLineCap="Triangle" StrokeEndLineCap="Round" HorizontalAlignment="Left" Opacity="0.65" Visibility="Hidden"/>
+                <Path x:Name="TimeIndicationPath2" Data="M-18.666667,316.33333 L-8.3333333,316.33333" Margin="20,150,0,0" Stretch="Fill" Stroke="#FF557BFF" VerticalAlignment="Top" StrokeThickness="3.5" StrokeStartLineCap="Triangle" StrokeEndLineCap="Round" HorizontalAlignment="Left" Opacity="0.65" Visibility="Hidden"/>
+            </Grid>
+        </ScrollViewer>
+
+        <Button Content="Spawn example" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Button_Click" Padding="5,1"/>
+    </Grid>
+</Window>
