@@ -23,5 +23,10 @@ namespace CocoSchedule.Forms
         {
             InitializeComponent();
         }
+
+        private void SaveBTN_Click()
+        {
+
+        }
     }
 }

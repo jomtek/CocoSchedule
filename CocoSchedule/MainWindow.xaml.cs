@@ -196,7 +196,7 @@ namespace CocoSchedule
 
                     var candidateTime = when + duration;
 
-                    for (int i = grid.Children.Count - 1; i >= 0; i--) // Reverse iteration
+                    for (int i = grid.Children.Count - 1; i >= 0; i--) // Reverse iteration through tasks of the day
                     {
                         var cell = (Cell)grid.Children[i];
                         if (Utils.CheckTimespanOverlap(when, when + duration, cell.Description.When, cell.Description.When + cell.Description.Duration))
