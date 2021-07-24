@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.ComponentModel;
+using CocoSchedule.Data;
 
 namespace CocoSchedule.Forms
 {
@@ -19,14 +21,27 @@ namespace CocoSchedule.Forms
     /// </summary>
     public partial class TaskInformationWindow : Window
     {
-        public TaskInformationWindow()
+        private TaskDescription _description;
+
+        public TaskInformationWindow(ref TaskDescription description)
         {
             InitializeComponent();
+            _description = description;
+
+            TitleTB.Text = description.TitleText;
+            DescriptionRTB.Document.Blocks.Clear();
+            DescriptionRTB.Document.Blocks.Add(new Paragraph(new Run(description.DescriptionText)));
+
+            TitleTB.Focus();
         }
 
-        private void SaveBTN_Click()
+        private void SaveBTN_Click(object sender, RoutedEventArgs e)
         {
+            _description.TitleText = TitleTB.Text.Trim();
+            _description.DescriptionText = new TextRange(DescriptionRTB.Document.ContentStart, DescriptionRTB.Document.ContentEnd).Text.Trim();
 
+            DialogResult = true;
+            Close();
         }
     }
 }

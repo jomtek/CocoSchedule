@@ -190,6 +190,18 @@ namespace CocoSchedule
 
                 if (grid.IsMouseOver)
                 {
+                    // TODO: avoid repeating code pattern for task information window dialog
+                    var cellDescription = new TaskDescription(entry.Key, new TimeSpan(), new TimeSpan(), null, null);
+
+                    var taskInfoWindow = new Forms.TaskInformationWindow(ref cellDescription) { Owner = this };
+                    taskInfoWindow.ShowDialog();
+
+                    // Dialog canceled
+                    if (taskInfoWindow.DialogResult == false)
+                    {
+                        return;
+                    }
+
                     var ts = Utils.HeightToTimespan(_lastClickedY) + new TimeSpan(6, 0, 0);
                     var when = Utils.RoundTimespanToNearest(ts, new TimeSpan(0, 10, 0));
                     var duration = new TimeSpan(1, 0, 0);
@@ -211,7 +223,10 @@ namespace CocoSchedule
                         }
                     }
 
-                    c = new Cell(new TaskDescription(entry.Key, when, duration, "Test", "Lorem ipsum"));
+                    cellDescription.When = when;
+                    cellDescription.Duration = duration;
+
+                    c = new Cell(cellDescription);
                     grid.Children.Add(c);
 
                     InitCell(c);

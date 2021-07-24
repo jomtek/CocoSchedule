@@ -82,6 +82,10 @@ namespace CocoSchedule
             // Duration
             Height = Utils.TimespanToHeight(Description.Duration);
 
+            // Title and description
+            TitleTB.Text = Description.TitleText;
+            DescTB.Text = Description.DescriptionText;
+
             // Time indicators
             if (!init)
             {
@@ -233,6 +237,10 @@ namespace CocoSchedule
         {
             EditBtnPath.Fill = Brushes.Black;
         }
+        private void EditBTN_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            ShowTaskEditor();
+        }
 
         private void userControl_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -244,6 +252,37 @@ namespace CocoSchedule
             EditBTN.Visibility = Visibility.Hidden;
         }
         #endregion
+        #region Context Menu
+        private void EditTaskItem_Click(object sender, RoutedEventArgs e)
+        {
+            ShowTaskEditor();
+        }
+        private void DeleteTaskItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        #endregion
+        #endregion
+
+        #region Config
+        private void ShowTaskEditor()
+        {
+            // https://github.com/dotnet/roslyn/issues/51515
+
+            var tempDescription = Description;
+
+            var taskInfoWindow = new Forms.TaskInformationWindow(ref tempDescription) { Owner = App.Current.MainWindow };
+            taskInfoWindow.ShowDialog();
+
+            if (taskInfoWindow.DialogResult == false)
+            {
+                return;
+            }
+
+            Description = tempDescription;
+            ConfigureDisplay();
+        }
+
         #endregion
     }
 }
