@@ -78,6 +78,8 @@
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
                             <Path Grid.Row="0"  Data="M0,56.285714 L742,56.285714" Stretch="Fill" Stroke="Black" StrokeThickness="1" VerticalAlignment="Bottom"/>
@@ -97,6 +99,8 @@
                             <Path Grid.Row="14" Data="M0,56.285714 L742,56.285714" Stretch="Fill" Stroke="Black" StrokeThickness="1" VerticalAlignment="Bottom"/>
                             <Path Grid.Row="15" Data="M0,56.285714 L742,56.285714" Stretch="Fill" Stroke="Black" StrokeThickness="1" VerticalAlignment="Bottom"/>
                             <Path Grid.Row="16" Data="M0,56.285714 L742,56.285714" Stretch="Fill" Stroke="Black" StrokeThickness="1" VerticalAlignment="Bottom"/>
+                            <Path Grid.Row="17" Data="M0,56.285714 L742,56.285714" Stretch="Fill" Stroke="Black" StrokeThickness="1" VerticalAlignment="Bottom"/>
+                            <Path Grid.Row="18" Data="M0,56.285714 L742,56.285714" Stretch="Fill" Stroke="Black" StrokeThickness="1" VerticalAlignment="Bottom"/>
                         </Grid>
                     </Grid>
 
@@ -143,29 +147,33 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Row="0"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="6 AM"/></TextBlock>
-                        <TextBlock Grid.Row="1"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="7 AM"/></TextBlock>
-                        <TextBlock Grid.Row="2"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="8 AM"/></TextBlock>
-                        <TextBlock Grid.Row="3"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="9 AM"/></TextBlock>
-                        <TextBlock Grid.Row="4"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="10 AM"/></TextBlock>
-                        <TextBlock Grid.Row="5"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="11 AM"/></TextBlock>
-                        <TextBlock Grid.Row="6"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="12 PM"/></TextBlock>
-                        <TextBlock Grid.Row="7"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="1 PM"/></TextBlock>
-                        <TextBlock Grid.Row="8"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="2 PM"/></TextBlock>
-                        <TextBlock Grid.Row="9"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="3 PM"/></TextBlock>
-                        <TextBlock Grid.Row="10" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="4 PM"/></TextBlock>
-                        <TextBlock Grid.Row="11" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="5 PM"/></TextBlock>
-                        <TextBlock Grid.Row="12" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="6 PM"/></TextBlock>
-                        <TextBlock Grid.Row="13" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="7 PM"/></TextBlock>
-                        <TextBlock Grid.Row="14" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="8 PM"/></TextBlock>
-                        <TextBlock Grid.Row="15" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="9 PM"/></TextBlock>
-                        <TextBlock Grid.Row="16" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="10 PM"/></TextBlock>
-                        <TextBlock Grid.Row="17" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="11 PM"/></TextBlock>
+                        <TextBlock Grid.Row="0"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="5 AM"/></TextBlock>
+                        <TextBlock Grid.Row="1"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="6 AM"/></TextBlock>
+                        <TextBlock Grid.Row="2"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="7 AM"/></TextBlock>
+                        <TextBlock Grid.Row="3"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="8 AM"/></TextBlock>
+                        <TextBlock Grid.Row="4"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="9 AM"/></TextBlock>
+                        <TextBlock Grid.Row="5"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="10 AM"/></TextBlock>
+                        <TextBlock Grid.Row="6"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="11 AM"/></TextBlock>
+                        <TextBlock Grid.Row="7"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="12 PM"/></TextBlock>
+                        <TextBlock Grid.Row="8"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="1 PM"/></TextBlock>
+                        <TextBlock Grid.Row="9"  Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="2 PM"/></TextBlock>
+                        <TextBlock Grid.Row="10" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="3 PM"/></TextBlock>
+                        <TextBlock Grid.Row="11" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="4 PM"/></TextBlock>
+                        <TextBlock Grid.Row="12" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="5 PM"/></TextBlock>
+                        <TextBlock Grid.Row="13" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="6 PM"/></TextBlock>
+                        <TextBlock Grid.Row="14" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="7 PM"/></TextBlock>
+                        <TextBlock Grid.Row="15" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="8 PM"/></TextBlock>
+                        <TextBlock Grid.Row="16" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="9 PM"/></TextBlock>
+                        <TextBlock Grid.Row="17" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="10 PM"/></TextBlock>
+                        <TextBlock Grid.Row="18" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="11 PM"/></TextBlock>
+                        <TextBlock Grid.Row="19" Margin="0,0,3,0" HorizontalAlignment="Right" FontSize="14" FontFamily="Montserrat"><Run Text="MDN"/></TextBlock>
                     </Grid>
                     <Grid x:Name="OtherTimeAnnotationsGrid" HorizontalAlignment="Right" Width="Auto" Margin="0,0,15,0" Opacity="0.7" >
-                        <TextBlock Grid.Row="0"  Margin="0,4,30,0" HorizontalAlignment="Right" FontFamily="Montserrat" FontSize="13"><Run Text="6 AM"/></TextBlock>
+                        <TextBlock Grid.Row="0"  Margin="0,4,30,0" HorizontalAlignment="Right" FontFamily="Montserrat" FontSize="13"><Run Text="5"/><Run Text=" AM"/></TextBlock>
                     </Grid>
                 </Grid>
 

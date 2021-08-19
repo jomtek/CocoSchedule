@@ -54,15 +54,18 @@
             </DockPanel>
 
             <!-- Manual resize -->
-            <Grid>
-                <Thumb x:Name="northThumb" Width="258" Height="7"
+            <Grid x:Name="WidgetsGrid">
+                <Thumb x:Name="northThumb" Height="7"
                 DragDelta="northThumb_DragDelta" MouseEnter="southThumb_MouseEnter" MouseLeave="southThumb_MouseLeave" PreviewMouseUp="Thumb_MouseUp" VerticalAlignment="Top" Background="White" Margin="0"/>
-                <Thumb x:Name="southThumb" Width="258" Height="7"
-                DragDelta="southThumb_OnDragDelta" MouseEnter="southThumb_MouseEnter" MouseLeave="southThumb_MouseLeave" PreviewMouseUp="Thumb_MouseUp" VerticalAlignment="Bottom" Margin="0,0,0,0.666"/>
+                <Thumb x:Name="southThumb" Height="7"
+                DragDelta="southThumb_OnDragDelta" MouseEnter="southThumb_MouseEnter" MouseLeave="southThumb_MouseLeave" PreviewMouseUp="Thumb_MouseUp" VerticalAlignment="Bottom" Margin="0,0,0,0.5"/>
                 <Grid x:Name="EditBTN" Margin="0,0,2,3" Height="22" Width="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Background="{Binding Background, ElementName=border}" FlowDirection="LeftToRight" MouseEnter="EditBTN_MouseEnter" MouseLeave="EditBTN_MouseLeave" Visibility="Hidden" PreviewMouseLeftButtonUp="EditBTN_PreviewMouseLeftButtonUp">
                     <Path x:Name="EditBtnPath" Style="{StaticResource EditPath}" Stretch="Fill" IsEnabled="False" Fill="Black" />
                 </Grid>
             </Grid>
+            
+            <!-- Mouse drag -->
+            <Grid x:Name="DragGrid" Background="#01000000" Margin="0,7" MouseDown="DragGrid_MouseDown" MouseUp="DragGrid_MouseUp" MouseMove="DragGrid_MouseMove"/>
 
             <!-- Menu -->
 

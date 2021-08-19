@@ -73,12 +73,8 @@ namespace CocoSchedule
             UIElement[] daysCopy = new UIElement[7];
             container.Children.CopyTo(daysCopy, 0);
             
-            Console.WriteLine($"dayscopy: {daysCopy.Length}");
-
             var elems = (IEnumerable<UIElement>)daysCopy;
-            elems = elems.Skip(first).Concat(elems.Take(first));
-
-            Console.WriteLine($"elems: {elems.Count()}");
+            elems = elems.Skip(first-1).Concat(elems.Take(first-1));
 
             container.Children.Clear();
 

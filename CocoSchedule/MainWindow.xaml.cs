@@ -65,9 +65,9 @@ namespace CocoSchedule
         {
             var margin = 30;
 
-            if (DateTime.Now.TimeOfDay > new TimeSpan(6, 0, 0))
+            if (DateTime.Now.TimeOfDay > new TimeSpan(5, 0, 0))
             {
-                var secondsSince = (int)DateTime.Now.Subtract(new TimeSpan(6, 0, 0)).TimeOfDay.TotalSeconds;
+                var secondsSince = (int)DateTime.Now.Subtract(new TimeSpan(5, 0, 0)).TimeOfDay.TotalSeconds;
                 return margin + (secondsSince * GlobalInfo.HourHeight) / 3600d;
             }
             else
@@ -80,7 +80,7 @@ namespace CocoSchedule
         #region UI Reactivity
         private void GuessHourHeight()
         {
-            GlobalInfo.HourHeight = DaysGrid.ActualHeight / 18d;
+            GlobalInfo.HourHeight = DaysGrid.ActualHeight / 20d;
         }
 
         private void RefreshAll(bool init = false)
@@ -202,7 +202,7 @@ namespace CocoSchedule
                         return;
                     }
 
-                    var ts = Utils.HeightToTimespan(_lastClickedY) + new TimeSpan(6, 0, 0);
+                    var ts = Utils.HeightToTimespan(_lastClickedY) + new TimeSpan(5, 0, 0);
                     var when = Utils.RoundTimespanToNearest(ts, new TimeSpan(0, 10, 0));
                     var duration = new TimeSpan(1, 0, 0);
 
@@ -295,6 +295,7 @@ namespace CocoSchedule
                 {
                     if (c.Description.Day == entry.Key)
                     {
+
                         bool collision = new Func<bool>(() =>
                         {
                             foreach (Cell candidateCell in entry.Value.Children)

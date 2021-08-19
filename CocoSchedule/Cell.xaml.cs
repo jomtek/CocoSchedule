@@ -75,8 +75,8 @@ namespace CocoSchedule
         public void ConfigureDisplay(bool init = false)
         {
             // When
-            TimeSpan distanceFrom6AM = Description.When - new TimeSpan(6, 0, 0);
-            double topMargin = Utils.TimespanToHeight(distanceFrom6AM);
+            TimeSpan distanceFrom5AM = Description.When - new TimeSpan(5, 0, 0);
+            double topMargin = Utils.TimespanToHeight(distanceFrom5AM);
             Margin = new Thickness(0, topMargin, 0, 0);
 
             // Duration
@@ -95,7 +95,7 @@ namespace CocoSchedule
 
         public void ApplySchedule()
         {
-            Margin = new Thickness(0, Utils.TimespanToHeight(Description.When - new TimeSpan(6, 0, 0)), 0, 0);
+            Margin = new Thickness(0, Utils.TimespanToHeight(Description.When - new TimeSpan(5, 0, 0)), 0, 0);
             Height = Utils.TimespanToHeight(Description.Duration);
             JustResized();
         }
@@ -109,13 +109,13 @@ namespace CocoSchedule
 
         public void JustResized(bool north = false, bool noLabels = false)
         {
-            var startTime = Utils.HeightToTimespan(Margin.Top) + new TimeSpan(6, 0, 0);
+            var startTime = Utils.HeightToTimespan(Margin.Top) + new TimeSpan(5, 0, 0);
             var endTime = Description.Duration + startTime;
 
             if (startTime.Minutes != 0)
             {
                 AssociatedLabel1.Text = DateTime.Today.Add(startTime).ToString("hh:mm tt", CultureInfo.CreateSpecificCulture("en-US"));
-                AssociatedLabel1.Margin = new Thickness(0, Utils.TimespanToHeight(startTime - new TimeSpan(6, 0, 0)), 0, 0);
+                AssociatedLabel1.Margin = new Thickness(0, Utils.TimespanToHeight(startTime - new TimeSpan(5, 0, 0)), 0, 0);
                 if (!noLabels) AssociatedLabel1.Visibility = Visibility.Visible;
                 if (!noLabels) _showLabel1 = true;
             }
@@ -130,7 +130,7 @@ namespace CocoSchedule
                 if (endTime.Minutes != 0)
                 {
                     AssociatedLabel2.Text = DateTime.Today.Add(endTime).ToString("hh:mm tt", CultureInfo.CreateSpecificCulture("en-US"));
-                    AssociatedLabel2.Margin = new Thickness(0, Utils.TimespanToHeight(endTime - new TimeSpan(6, 0, 0)), 0, 0);
+                    AssociatedLabel2.Margin = new Thickness(0, Utils.TimespanToHeight(endTime - new TimeSpan(5, 0, 0)), 0, 0);
                     if (!noLabels) AssociatedLabel2.Visibility = Visibility.Visible;
                     if (!noLabels) _showLabel2 = true;
                 }
@@ -174,7 +174,7 @@ namespace CocoSchedule
             var eventArgs = new CellResizedEventArgs(true, Description.When, Description.Duration);
 
             Description.Duration = Utils.HeightToTimespan(Height);
-            Description.When = Utils.HeightToTimespan(Margin.Top) + new TimeSpan(6, 0, 0);
+            Description.When = Utils.HeightToTimespan(Margin.Top) + new TimeSpan(5, 0, 0);
 
             Resized?.Invoke(this, eventArgs);
         }
@@ -193,7 +193,7 @@ namespace CocoSchedule
         #region Display
         private void userControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            // TODO: make the limit-values non-arbitrary
+            // TODO: make the limit values non-arbitrary
 
             // Edit button
             if (e.NewSize.Height > EditBTN.ActualHeight + EditBTN.Margin.Bottom)
@@ -225,6 +225,53 @@ namespace CocoSchedule
             }
         }
         #endregion
+        #endregion
+
+        #region Drag
+        private bool _dragging = false;
+        private double currentPositionX;
+
+        private void DragGrid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            currentPositionX = e.GetPosition(Application.Current.MainWindow).Y;
+            _dragging = true;
+        }
+        
+        private void DragGrid_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            currentPositionX = 0;
+            _dragging = false;
+
+            // Apply new schedule
+            Description.When = Utils.RoundTimespanToNearest(Description.When, new TimeSpan(0, 5, 0));
+            ApplySchedule();
+        }
+
+        private void DragGrid_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_dragging && e.LeftButton == MouseButtonState.Pressed)
+            {
+                double deltaDirection = currentPositionX - e.GetPosition(Application.Current.MainWindow).Y;
+
+                // Same code in both cases, I know
+                if (deltaDirection > 0) // Mouse moves towards top
+                {
+                    Margin = new Thickness(Margin.Left, Margin.Top - deltaDirection, Margin.Right, Margin.Bottom);
+
+                }
+                else // Mouse moves towards bottom
+                {
+                    Margin = new Thickness(Margin.Left, Margin.Top - deltaDirection, Margin.Right, Margin.Bottom);
+                }
+                
+                JustResized();
+                Resized?.Invoke(this, new CellResizedEventArgs(deltaDirection > 0, Description.When, Description.Duration));
+
+                Description.When = Utils.HeightToTimespan(Margin.Top) + new TimeSpan(5, 0, 0);
+
+                currentPositionX = e.GetPosition(Application.Current.MainWindow).Y;
+            }
+        }
         #endregion
 
         #region Menu
