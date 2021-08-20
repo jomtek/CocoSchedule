@@ -45,6 +45,16 @@ namespace CocoSchedule
                 { DayOfWeek.Saturday,  SaturdayGrid  },
                 { DayOfWeek.Sunday,    SundayGrid    }
             };
+
+            Utils.RearrangeDays((int)DateTime.Now.DayOfWeek, ref TopGrid);
+            Utils.RearrangeDays((int)DateTime.Now.DayOfWeek, ref DaysGrid);
+
+            int counter = 0;
+            foreach (TextBlock dayTB in TopGrid.Children)
+            {
+                dayTB.Text = DateTime.Now.AddDays(counter).ToString("ddd MM/dd");
+                counter++;
+            }
         }
 
         private void Init_UITimer()
@@ -180,6 +190,14 @@ namespace CocoSchedule
         #endregion
 
         #region Context Menu
+        private void DayGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (!IsMouseOverAnyCell())
+            {
+                var cmnu = FindResource("CMenu") as ContextMenu;
+                cmnu.IsOpen = true;
+            }
+        }
         private void AddTaskCMItem_Click(object sender, RoutedEventArgs e)
         {
             Cell c;
@@ -252,12 +270,6 @@ namespace CocoSchedule
         #endregion
 
         #region Temp
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Utils.RearrangeDays((int)DateTime.Now.DayOfWeek, ref TopGrid);
-            Utils.RearrangeDays((int)DateTime.Now.DayOfWeek, ref DaysGrid);
-        }
-
         private void InitCell(Cell c)
         {
             c.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -341,13 +353,26 @@ namespace CocoSchedule
         }
         #endregion
 
-        private void DayGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        #region Tool Menu
+        private void LastWeekBTN_MouseEnter(object sender, MouseEventArgs e)
         {
-            if ( !IsMouseOverAnyCell() )
-            {
-                var cmnu = FindResource("CMenu") as ContextMenu;
-                cmnu.IsOpen = true;
-            }
+            LastWeekBTN.Background = Brushes.SkyBlue;
         }
+
+        private void LastWeekBTN_MouseLeave(object sender, MouseEventArgs e)
+        {
+            LastWeekBTN.Background = Brushes.Transparent;
+        }
+
+        private void NextWeekBTN_MouseEnter(object sender, MouseEventArgs e)
+        {
+            NextWeekBTN.Background = Brushes.SkyBlue;
+        }
+
+        private void NextWeekBTN_MouseLeave(object sender, MouseEventArgs e)
+        {
+            NextWeekBTN.Background = Brushes.Transparent;
+        }
+        #endregion
     }
 }

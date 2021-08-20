@@ -12,11 +12,12 @@
         <converters:HeightToTitleFontSizeConverter x:Key="HeightToTitleFontSize" />
         <converters:HeightToDescFontSizeConverter x:Key="HeightToDescFontSize" />
 
-        <!-- Styles -->
+        <!-- SVG -->
         <Style x:Key="EditPath" TargetType="{x:Type Path}">
             <Setter Property="Data" Value="M 417.8 315.5 l 20 -20 c 3.8 -3.8 10.2 -1.1 10.2 4.2 V 464 c 0 26.5 -21.5 48 -48 48 H 48 c -26.5 0 -48 -21.5 -48 -48 V 112 c 0 -26.5 21.5 -48 48 -48 h 292.3 c 5.3 0 8 6.5 4.2 10.2 l -20 20 c -1.1 1.1 -2.7 1.8 -4.2 1.8 H 48 c -8.8 0 -16 7.2 -16 16 v 352 c 0 8.8 7.2 16 16 16 h 352 c 8.8 0 16 -7.2 16 -16 V 319.7 c 0 -1.6 0.6 -3.1 1.8 -4.2 Z m 145.9 -191.2 L 251.2 436.8 l -99.9 11.1 c -13.4 1.5 -24.7 -9.8 -23.2 -23.2 l 11.1 -99.9 L 451.7 12.3 c 16.4 -16.4 43 -16.4 59.4 0 l 52.6 52.6 c 16.4 16.4 16.4 43 0 59.4 Z m -93.6 48.4 L 403.4 106 L 169.8 339.5 l -8.3 75.1 l 75.1 -8.3 l 233.5 -233.6 Z m 71 -85.2 l -52.6 -52.6 c -3.8 -3.8 -10.2 -4 -14.1 0 L 426 83.3 l 66.7 66.7 l 48.4 -48.4 c 3.9 -3.8 3.9 -10.2 0 -14.1 Z" />
         </Style>
 
+        <!-- Other -->
         <Style TargetType="{x:Type Thumb}" BasedOn="{x:Null}">
             <Style.Setters>
                 <!--<Setter Property="Background" Value="#FFCD6E6E" />-->
@@ -42,8 +43,6 @@
 
         <Grid x:Name="WrapperGrid">
 
-            <Grid x:Name="DragGrid" Background="#01000000" Margin="0,7,1,7" MouseDown="DragGrid_MouseDown" MouseUp="DragGrid_MouseUp" MouseMove="DragGrid_MouseMove"/>
-
             <Grid x:Name="ElementsGrid" Margin="1,1,0,-1">
 
                 <!-- Menu -->
@@ -59,16 +58,20 @@
                 </DockPanel>
 
                 <!-- Manual resize -->
-                <Grid x:Name="WidgetsGrid">
-                    <Thumb x:Name="northThumb" Height="7"
-                DragDelta="northThumb_DragDelta" MouseEnter="southThumb_MouseEnter" MouseLeave="southThumb_MouseLeave" PreviewMouseUp="Thumb_MouseUp" VerticalAlignment="Top" Background="White" Margin="0"/>
-                    <Thumb x:Name="southThumb" Height="7"
-                DragDelta="southThumb_OnDragDelta" MouseEnter="southThumb_MouseEnter" MouseLeave="southThumb_MouseLeave" PreviewMouseUp="Thumb_MouseUp" VerticalAlignment="Bottom" Margin="0,0,0,0.5"/>
-                    <Grid x:Name="EditBTN" Margin="0,0,2,3" Height="22" Width="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Background="{Binding Background, ElementName=BorderComponent}" FlowDirection="LeftToRight" MouseEnter="EditBTN_MouseEnter" MouseLeave="EditBTN_MouseLeave" PreviewMouseLeftButtonUp="EditBTN_PreviewMouseLeftButtonUp">
-                        <Path x:Name="EditBtnPath" Style="{StaticResource EditPath}" Stretch="Fill" IsEnabled="False" Fill="Black" />
-                    </Grid>
-                </Grid>
 
+            </Grid>
+            <Grid x:Name="DragGrid" Background="#01000000" Margin="0,7,1,7" MouseDown="DragGrid_MouseDown" MouseUp="DragGrid_MouseUp" MouseMove="DragGrid_MouseMove"/>
+            <Grid x:Name="WidgetsGrid" Margin="0,0,1,0">
+                <!-- Thumbs for cell resizing -->
+                <Thumb x:Name="northThumb" Height="7"
+                DragDelta="northThumb_DragDelta" MouseEnter="southThumb_MouseEnter" MouseLeave="southThumb_MouseLeave" PreviewMouseUp="Thumb_MouseUp" VerticalAlignment="Top" Background="White" Margin="0"/>
+                <Thumb x:Name="southThumb" Height="7"
+                DragDelta="southThumb_OnDragDelta" MouseEnter="southThumb_MouseEnter" MouseLeave="southThumb_MouseLeave" PreviewMouseUp="Thumb_MouseUp" VerticalAlignment="Bottom" Margin="0,0,0,0.5"/>
+                
+                <!-- Edit button -->
+                <Grid x:Name="EditBTN" Margin="0,0,2,3" Height="22" Width="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Background="{Binding Background, ElementName=BorderComponent}" FlowDirection="LeftToRight" MouseEnter="EditBTN_MouseEnter" MouseLeave="EditBTN_MouseLeave" PreviewMouseLeftButtonUp="EditBTN_PreviewMouseLeftButtonUp">
+                    <Path x:Name="EditBtnPath" Style="{StaticResource EditPath}" Stretch="Fill" IsEnabled="False" Fill="Black" />
+                </Grid>
             </Grid>
         </Grid>
     </Border>
