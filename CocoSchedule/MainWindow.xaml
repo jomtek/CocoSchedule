@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CocoSchedule"
         mc:Ignorable="d"
         Title="CocoSchedule"
-        Width="800" Height="550" MinWidth="875" MinHeight="520" SizeChanged="Window_SizeChanged">
+        Width="800" Height="550" MinWidth="875" MinHeight="520" SizeChanged="Window_SizeChanged" Closing="Window_Closing" ContentRendered="Window_ContentRendered">
 
     <Window.CommandBindings>
         <CommandBinding Command="local:Command.TableZoomPlusCmd" Executed="TableZoomPlus_Executed" />

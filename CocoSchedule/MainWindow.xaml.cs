@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.IO;
 
 namespace CocoSchedule
 {
@@ -52,8 +53,6 @@ namespace CocoSchedule
 
             _firstDayShown = Utils.General.GetActualDay();
             RefreshDaysAnnotations();
-
-
         }
 
         private void Init_UITimer()
@@ -470,6 +469,35 @@ namespace CocoSchedule
             RefreshDaysAnnotations();
         }
         #endregion
+
+        #endregion
+
+        #region Window events
+        private void Window_ContentRendered(object sender, EventArgs e)
+        {
+            if (File.Exists("calendar.ser"))
+            {
+                GlobalInfo.Calendar =
+                    Utils.Serialization.Deserialize<Dictionary<DateTime, List<TaskDescription>>>("calendar.ser");
+            }
+            else
+            {
+                MessageBox.Show(
+                    "Welcome and thank you for choosing CocoSchedule !\n\n" +
+                    "Find this project on Github.\nMade with love by Jomtek.",
+                    "CocoSchedule",
+                    MessageBoxButton.OK, MessageBoxImage.Information
+                );
+            }
+
+            FillTableWithCalendarInfo();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            SaveActuallyShownDays();
+            Utils.Serialization.Serialize(GlobalInfo.Calendar, "calendar.ser");
+        }
         #endregion
     }
 }
