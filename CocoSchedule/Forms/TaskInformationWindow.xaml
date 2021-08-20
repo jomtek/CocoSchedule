@@ -6,31 +6,99 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CocoSchedule"
         mc:Ignorable="d"
-        Title="Task information" Height="400" Width="450" Left="Auto" WindowStyle="ToolWindow">
+        Title="Task information" Height="375" Width="450" Left="Auto" WindowStyle="ToolWindow">
 
-    <DockPanel Margin="15,15,15,0">
-        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left">
-            <TextBlock Text="Title" FontSize="20" VerticalAlignment="Center" />
-            <TextBlock Text="Description" FontSize="20" VerticalAlignment="Center" Margin="0,10,0,0" />
-        </StackPanel>
-
-        <StackPanel DockPanel.Dock="Right" Margin="15,0,0,0">
-            <TextBox x:Name="TitleTB"
+    <StackPanel Margin="15">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="90" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Grid.Column="0" Text="Title" FontSize="18" VerticalAlignment="Center" />
+            <TextBox Grid.Column="2" x:Name="TitleTB"
                 FontSize="16"
                 VerticalContentAlignment="Center"
-                Padding="0,5" TextDecorations="{x:Null}" />
+                Padding="0,5" TextDecorations="{x:Null}" Margin="0" />
+        </Grid>
 
-            <RichTextBox x:Name="DescriptionRTB"
+        <Grid Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="90" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="Description" FontSize="18" VerticalAlignment="Top" />
+            <RichTextBox Grid.Column="2" x:Name="DescriptionRTB"
                 FontSize="16"
                 VerticalAlignment="Top" HorizontalAlignment="Left"
-                Height="250" Padding="-3,0,0,0" Margin="0,5,0,0" />
+                Height="150" Padding="-3,0,0,0" />
+        </Grid>
 
-            <Button x:Name="SaveBTN"
+        <Grid Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="90" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="Colour" FontSize="18" VerticalAlignment="Top" />
+            <ComboBox x:Name="ColorCMB" Grid.Column="2" SelectedIndex="1">
+                <!-- Cell color choices -->
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="{StaticResource CellColor_Green}" Margin="0,0,5,0" Width="25" Height="25" />
+                    <TextBlock Text="Green" FontSize="15" FontWeight="DemiBold" VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="{StaticResource CellColor_Blue}" Margin="0,0,5,0" Width="25" Height="25" />
+                    <TextBlock Text="Blue" FontSize="15" FontWeight="DemiBold" VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="{StaticResource CellColor_Blue2}" Margin="0,0,5,0" Width="25" Height="25" />
+                    <TextBlock Text="Blue 2" FontSize="15" FontWeight="DemiBold" VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="{StaticResource CellColor_Yellow}" Margin="0,0,5,0" Width="25" Height="25" />
+                    <TextBlock Text="Yellow" FontSize="15" FontWeight="DemiBold" VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="{StaticResource CellColor_Orange}" Margin="0,0,5,0" Width="25" Height="25" />
+                    <TextBlock Text="Orange" FontSize="15" FontWeight="DemiBold" VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="{StaticResource CellColor_Red}" Margin="0,0,5,0" Width="25" Height="25" />
+                    <TextBlock Text="Red" FontSize="15" FontWeight="DemiBold" VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="{StaticResource CellColor_Pink}"  Margin="0,0,5,0" Width="25" Height="25" />
+                    <TextBlock Text="Pink" FontSize="15" FontWeight="DemiBold" VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="{StaticResource CellColor_Purple}" Margin="0,0,5,0" Width="25" Height="25" />
+                    <TextBlock Text="Purple" FontSize="15" FontWeight="DemiBold" VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="{StaticResource CellColor_Beige}" Margin="0,0,5,0" Width="25" Height="25" />
+                    <TextBlock Text="Beige" FontSize="15" FontWeight="DemiBold" VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="{StaticResource CellColor_Gray}" Margin="0,0,5,0" Width="25" Height="25" />
+                    <TextBlock Text="Gray" FontSize="15" FontWeight="DemiBold" VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="{StaticResource CellColor_Gray2}" Margin="0,0,5,0" Width="25" Height="25" />
+                    <TextBlock Text="Gray 2" FontSize="15" FontWeight="DemiBold" VerticalAlignment="Center" />
+                </StackPanel>
+            </ComboBox>
+        </Grid>
+
+        <Button x:Name="SaveBTN"
                 Content="Save"
                 FontSize="20"
                 IsDefault="True"
-                Margin="0,10,0,0" Padding="0,7" VerticalAlignment="Bottom" Click="SaveBTN_Click"
-                IsEnabled="{qc:Binding '$P.Length > 0', P={Binding ElementName=TitleTB, Path=Text}}" />
-        </StackPanel>
-    </DockPanel>
+                Margin="0,15,0,0" Padding="0,7" VerticalAlignment="Top" Click="SaveBTN_Click"
+                IsEnabled="{qc:Binding $P.Length &gt; 0, P={Binding Text, ElementName=TitleTB}}" />
+    </StackPanel>
 </Window>

@@ -4,6 +4,17 @@
              xmlns:local="clr-namespace:CocoSchedule"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <!-- Cell colors -->
+        <SolidColorBrush x:Key="CellColor_Green"  Color="Green" />
+        <SolidColorBrush x:Key="CellColor_Blue"   Color="CornflowerBlue" />
+        <SolidColorBrush x:Key="CellColor_Blue2"  Color="Blue" />
+        <SolidColorBrush x:Key="CellColor_Yellow" Color="#FFB8B857" />
+        <SolidColorBrush x:Key="CellColor_Orange" Color="#FFC79251" />
+        <SolidColorBrush x:Key="CellColor_Red"    Color="#FFB65F5F" />
+        <SolidColorBrush x:Key="CellColor_Pink"   Color="#FFFFA7B4" />
+        <SolidColorBrush x:Key="CellColor_Purple" Color="MediumPurple" />
+        <SolidColorBrush x:Key="CellColor_Beige"  Color="Beige" />
+        <SolidColorBrush x:Key="CellColor_Gray"   Color="#FF9C9C9C" />
+        <SolidColorBrush x:Key="CellColor_Gray2"  Color="#FF6A6A6A" />
     </Application.Resources>
 </Application>

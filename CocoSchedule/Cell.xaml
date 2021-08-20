@@ -38,37 +38,38 @@
         </ContextMenu>
     </UserControl.ContextMenu>
 
-    <Border x:Name="border" BorderThickness="1" Background="#FF548349" BorderBrush="Black">
+    <Border x:Name="BorderComponent" BorderThickness="1" Background="CornflowerBlue" BorderBrush="Black">
 
-        <Grid x:Name="ContainerGrid">
+        <Grid x:Name="WrapperGrid">
 
-            <!-- Basic information -->
-            <DockPanel Margin="0">
-                <Viewbox x:Name="TitleViewbox" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="3,0,5,0" Height="{Binding ActualHeight, ElementName=TitleTB}" DockPanel.Dock="Top">
-                    <TextBlock x:Name="TitleTB" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap"
-                        FontSize="{Binding ActualHeight, Converter={StaticResource HeightToTitleFontSize}, ElementName=ContainerGrid}" Text="Méditation" FontWeight="Bold" />
-                </Viewbox>
-                <Grid x:Name="DescGrid" Height="Auto" VerticalAlignment="Stretch" Width="Auto" HorizontalAlignment="Left" Margin="15,0,27.25,5" DockPanel.Dock="Bottom">
-                    <TextBlock x:Name="DescTB" TextTrimming="WordEllipsis" TextWrapping="WrapWithOverflow" Foreground="#FF363636" UseLayoutRounding="False" VerticalAlignment="Stretch" Margin="0" FontSize="15" Text="Appeler kwak"/>
-                </Grid>
-            </DockPanel>
+            <Grid x:Name="DragGrid" Background="#01000000" Margin="0,7,1,7" MouseDown="DragGrid_MouseDown" MouseUp="DragGrid_MouseUp" MouseMove="DragGrid_MouseMove"/>
 
-            <!-- Manual resize -->
-            <Grid x:Name="WidgetsGrid">
-                <Thumb x:Name="northThumb" Height="7"
+            <Grid x:Name="ElementsGrid" Margin="1,1,0,-1">
+
+                <!-- Menu -->
+                <!-- Basic information -->
+                <DockPanel Margin="0">
+                    <Viewbox x:Name="TitleViewbox" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="3,0,5,0" Height="{Binding ActualHeight, ElementName=TitleTB}" DockPanel.Dock="Top">
+                        <TextBlock x:Name="TitleTB" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap"
+                        FontSize="{Binding ActualHeight, Converter={StaticResource HeightToTitleFontSize}, ElementName=ElementsGrid}" Text="Méditation" FontWeight="Bold" />
+                    </Viewbox>
+                    <Grid x:Name="DescGrid" Height="Auto" VerticalAlignment="Stretch" Width="Auto" HorizontalAlignment="Left" Margin="15,0,27.25,5" DockPanel.Dock="Bottom">
+                        <TextBlock x:Name="DescTB" TextTrimming="WordEllipsis" TextWrapping="WrapWithOverflow" Foreground="#FF363636" UseLayoutRounding="False" VerticalAlignment="Stretch" Margin="0" FontSize="15" Text="Appeler kwak"/>
+                    </Grid>
+                </DockPanel>
+
+                <!-- Manual resize -->
+                <Grid x:Name="WidgetsGrid">
+                    <Thumb x:Name="northThumb" Height="7"
                 DragDelta="northThumb_DragDelta" MouseEnter="southThumb_MouseEnter" MouseLeave="southThumb_MouseLeave" PreviewMouseUp="Thumb_MouseUp" VerticalAlignment="Top" Background="White" Margin="0"/>
-                <Thumb x:Name="southThumb" Height="7"
+                    <Thumb x:Name="southThumb" Height="7"
                 DragDelta="southThumb_OnDragDelta" MouseEnter="southThumb_MouseEnter" MouseLeave="southThumb_MouseLeave" PreviewMouseUp="Thumb_MouseUp" VerticalAlignment="Bottom" Margin="0,0,0,0.5"/>
-                <Grid x:Name="EditBTN" Margin="0,0,2,3" Height="22" Width="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Background="{Binding Background, ElementName=border}" FlowDirection="LeftToRight" MouseEnter="EditBTN_MouseEnter" MouseLeave="EditBTN_MouseLeave" Visibility="Hidden" PreviewMouseLeftButtonUp="EditBTN_PreviewMouseLeftButtonUp">
-                    <Path x:Name="EditBtnPath" Style="{StaticResource EditPath}" Stretch="Fill" IsEnabled="False" Fill="Black" />
+                    <Grid x:Name="EditBTN" Margin="0,0,2,3" Height="22" Width="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Background="{Binding Background, ElementName=BorderComponent}" FlowDirection="LeftToRight" MouseEnter="EditBTN_MouseEnter" MouseLeave="EditBTN_MouseLeave" PreviewMouseLeftButtonUp="EditBTN_PreviewMouseLeftButtonUp">
+                        <Path x:Name="EditBtnPath" Style="{StaticResource EditPath}" Stretch="Fill" IsEnabled="False" Fill="Black" />
+                    </Grid>
                 </Grid>
+
             </Grid>
-            
-            <!-- Mouse drag -->
-            <Grid x:Name="DragGrid" Background="#01000000" Margin="0,7" MouseDown="DragGrid_MouseDown" MouseUp="DragGrid_MouseUp" MouseMove="DragGrid_MouseMove"/>
-
-            <!-- Menu -->
-
         </Grid>
     </Border>
 </UserControl>

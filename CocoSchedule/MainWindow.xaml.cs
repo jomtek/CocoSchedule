@@ -191,7 +191,9 @@ namespace CocoSchedule
                 if (grid.IsMouseOver)
                 {
                     // TODO: avoid repeating code pattern for task information window dialog
-                    var cellDescription = new TaskDescription(entry.Key, new TimeSpan(), new TimeSpan(), null, null);
+                    
+                    // Placeholder arguments for constructor...
+                    var cellDescription = new TaskDescription(entry.Key, new TimeSpan(), new TimeSpan(), null, null, (TaskColor)1);
 
                     var taskInfoWindow = new Forms.TaskInformationWindow(ref cellDescription) { Owner = this };
                     taskInfoWindow.ShowDialog();
@@ -295,7 +297,6 @@ namespace CocoSchedule
                 {
                     if (c.Description.Day == entry.Key)
                     {
-
                         bool collision = new Func<bool>(() =>
                         {
                             foreach (Cell candidateCell in entry.Value.Children)

@@ -14,15 +14,17 @@ namespace CocoSchedule.Data
         public TimeSpan Duration { get; set; }
         public string TitleText { get; set; }
         public string DescriptionText { get; set; }
+        public TaskColor Color { get; set; }
 
         public TaskDescription(
-            DayOfWeek day, TimeSpan when, TimeSpan duration, string title, string description)
+            DayOfWeek day, TimeSpan when, TimeSpan duration, string title, string description, TaskColor color)
         {
             Day = day;
             When = when;
             Duration = duration;
             TitleText = title;
             DescriptionText = description;
+            Color = color;
         }
     }
 }

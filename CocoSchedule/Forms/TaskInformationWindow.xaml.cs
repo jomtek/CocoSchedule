@@ -31,6 +31,7 @@ namespace CocoSchedule.Forms
             TitleTB.Text = description.TitleText;
             DescriptionRTB.Document.Blocks.Clear();
             DescriptionRTB.Document.Blocks.Add(new Paragraph(new Run(description.DescriptionText)));
+            ColorCMB.SelectedIndex = (int)description.Color;
 
             TitleTB.Focus();
         }
@@ -39,6 +40,7 @@ namespace CocoSchedule.Forms
         {
             _description.TitleText = TitleTB.Text.Trim();
             _description.DescriptionText = new TextRange(DescriptionRTB.Document.ContentStart, DescriptionRTB.Document.ContentEnd).Text.Trim();
+            _description.Color = (TaskColor)ColorCMB.SelectedIndex;
 
             DialogResult = true;
             Close();

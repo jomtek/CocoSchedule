@@ -194,6 +194,7 @@
     <Compile Include="Command.cs" />
     <Compile Include="Converters\HeightToDescFontSize.cs" />
     <Compile Include="Converters\HeightToTitleFontSize.cs" />
+    <Compile Include="Data\TaskColor.cs" />
     <Compile Include="Data\TaskDescription.cs" />
     <Compile Include="Forms\TaskInformationWindow.xaml.cs">
       <DependentUpon>TaskInformationWindow.xaml</DependentUpon>

@@ -85,6 +85,7 @@ namespace CocoSchedule
             // Title and description
             TitleTB.Text = Description.TitleText;
             DescTB.Text = Description.DescriptionText;
+            BorderComponent.Background = (Brush)App.Current.Resources[GlobalInfo.TaskColorResKeys[Description.Color]];
 
             // Time indicators
             if (!init)
