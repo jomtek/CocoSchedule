@@ -25,6 +25,7 @@ namespace CocoSchedule
     {
         // Other
         private Dictionary<DayOfWeek, Grid> _daysGrids;
+        private DateTime _firstDayShown;
 
         // UI
         private DispatcherTimer _uiTimer;
@@ -46,15 +47,13 @@ namespace CocoSchedule
                 { DayOfWeek.Sunday,    SundayGrid    }
             };
 
-            Utils.RearrangeDays((int)DateTime.Now.DayOfWeek, ref TopGrid);
-            Utils.RearrangeDays((int)DateTime.Now.DayOfWeek, ref DaysGrid);
+            Utils.General.RearrangeDays((int)DateTime.Now.DayOfWeek, ref TopGrid);
+            Utils.General.RearrangeDays((int)DateTime.Now.DayOfWeek, ref DaysGrid);
 
-            int counter = 0;
-            foreach (TextBlock dayTB in TopGrid.Children)
-            {
-                dayTB.Text = DateTime.Now.AddDays(counter).ToString("ddd MM/dd");
-                counter++;
-            }
+            _firstDayShown = Utils.General.GetActualDay();
+            RefreshDaysAnnotations();
+
+
         }
 
         private void Init_UITimer()
@@ -63,6 +62,29 @@ namespace CocoSchedule
             _uiTimer.Interval = TimeSpan.FromSeconds(2);
             _uiTimer.Tick += (object sender, EventArgs e) => { UpdateTimeLine(); };
             _uiTimer.Start();
+        }
+
+        private void RefreshDaysAnnotations()
+        {
+            int counter = 0;
+            foreach (TextBlock dayTB in TopGrid.Children)
+            {
+                dayTB.Text = _firstDayShown.AddDays(counter).ToString("ddd MM/dd");
+                
+                // Highlight day annotation if actual day
+                if (counter == 0 && _firstDayShown == Utils.General.GetActualDay())
+                {
+                    dayTB.Background = Brushes.Yellow;
+                    dayTB.ToolTip = "Today";
+                }
+                else
+                {
+                    dayTB.Background = Brushes.Transparent;
+                    dayTB.ToolTip = null;
+                }
+
+                counter++;
+            }
         }
 
         #region Timeline
@@ -222,16 +244,17 @@ namespace CocoSchedule
                         return;
                     }
 
-                    var ts = Utils.HeightToTimespan(_lastClickedY) + new TimeSpan(5, 0, 0);
-                    var when = Utils.RoundTimespanToNearest(ts, new TimeSpan(0, 10, 0));
+                    var ts = Utils.General.HeightToTimespan(_lastClickedY) + new TimeSpan(5, 0, 0);
+                    var when = Utils.General.RoundTimespanToNearest(ts, new TimeSpan(0, 10, 0));
                     var duration = new TimeSpan(1, 0, 0);
 
                     var candidateTime = when + duration;
 
-                    for (int i = grid.Children.Count - 1; i >= 0; i--) // Reverse iteration through tasks of the day
+                    // Reverse iteration through the tasks of the day
+                    for (int i = grid.Children.Count - 1; i >= 0; i--)
                     {
                         var cell = (Cell)grid.Children[i];
-                        if (Utils.CheckTimespanOverlap(when, when + duration, cell.Description.When, cell.Description.When + cell.Description.Duration))
+                        if (Utils.General.CheckTimespanOverlap(when, when + duration, cell.Description.When, cell.Description.When + cell.Description.Duration))
                         {
                             duration = cell.Description.When - when;
                             if (duration < new TimeSpan(0, 4, 55))
@@ -315,7 +338,7 @@ namespace CocoSchedule
                             {
                                 if (candidateCell.Description.When == c.Description.When) continue; // Ignore self
 
-                                if (Utils.CheckTimespanOverlap(
+                                if (Utils.General.CheckTimespanOverlap(
                                     c.Description.When, c.Description.When + c.Description.Duration,
                                     candidateCell.Description.When, candidateCell.Description.When + candidateCell.Description.Duration))
                                 {
@@ -354,6 +377,7 @@ namespace CocoSchedule
         #endregion
 
         #region Tool Menu
+        #region Effects
         private void LastWeekBTN_MouseEnter(object sender, MouseEventArgs e)
         {
             LastWeekBTN.Background = Brushes.SkyBlue;
@@ -373,6 +397,79 @@ namespace CocoSchedule
         {
             NextWeekBTN.Background = Brushes.Transparent;
         }
+        #endregion
+
+        #region Navigate
+        private void SaveActuallyShownDays()
+        {
+            var currentIterDay = _firstDayShown;
+            foreach (Grid dayGrid in DaysGrid.Children)
+            {
+                var tasks = new List<TaskDescription>();
+                foreach (Cell cell in dayGrid.Children)
+                {
+                    tasks.Add(cell.Description);
+                }
+
+                if (!GlobalInfo.Calendar.ContainsKey(currentIterDay))
+                {
+                    // TODO: I am adding days by groups of 7. And showing them so. Can't I break here ? 
+                    GlobalInfo.Calendar.Add(currentIterDay, tasks);
+                }
+
+                currentIterDay = currentIterDay.AddDays(1);
+            }
+            Console.WriteLine("a");
+        }
+
+        private void FillTableWithCalendarInfo()
+        {
+            var currentIterDay = _firstDayShown;
+            foreach (Grid dayGrid in DaysGrid.Children)
+            {
+                dayGrid.Children.Clear();
+
+                if (GlobalInfo.Calendar.ContainsKey(currentIterDay))
+                {
+                    List<TaskDescription> tasks = GlobalInfo.Calendar[currentIterDay];
+                    foreach (TaskDescription task in tasks)
+                    {
+                        var cell = new Cell(task);
+                        InitCell(cell);
+
+                        dayGrid.Children.Add(cell);
+                    }
+                }
+                else
+                {
+                    // Add empty day to the calendar with current iteration day
+                    GlobalInfo.Calendar.Add(currentIterDay, new List<TaskDescription>());
+                }
+
+                currentIterDay = currentIterDay.AddDays(1);
+            }
+        }
+
+        private void LastWeekBTN_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            SaveActuallyShownDays();
+            _firstDayShown = _firstDayShown.AddDays(-7);
+
+            FillTableWithCalendarInfo();
+
+            RefreshDaysAnnotations();
+        }
+
+        private void NextWeekBTN_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            SaveActuallyShownDays();
+            _firstDayShown = _firstDayShown.AddDays(7);
+
+            FillTableWithCalendarInfo();
+
+            RefreshDaysAnnotations();
+        }
+        #endregion
         #endregion
     }
 }

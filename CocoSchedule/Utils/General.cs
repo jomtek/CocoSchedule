@@ -7,9 +7,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace CocoSchedule
+namespace CocoSchedule.Utils
 {
-    public static class Utils
+    public static class General
     {
         #region Time
         public static double TimespanToHeight(TimeSpan ts)
@@ -51,6 +51,11 @@ namespace CocoSchedule
         {
             return start1 < end2 && start2 < end1;
         }
+
+        public static DateTime GetActualDay()
+        {
+            return new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+        }
         #endregion
 
         #region Graphics
@@ -82,20 +87,6 @@ namespace CocoSchedule
             int counter = 0;
             foreach (UIElement day in elems)
             {
-                if (day is TextBlock)
-                {
-                    var tb = (TextBlock)day;
-
-                    if (counter == 0)
-                    {
-                        tb.Background = Brushes.Yellow;
-                    }
-                    else
-                    {
-                        tb.Background = Brushes.Transparent;
-                    }
-                }
-
                 day.SetValue(Grid.ColumnProperty, counter);
                 container.Children.Add(day);
                 counter++;

@@ -76,11 +76,11 @@ namespace CocoSchedule
         {
             // When
             TimeSpan distanceFrom5AM = Description.When - new TimeSpan(5, 0, 0);
-            double topMargin = Utils.TimespanToHeight(distanceFrom5AM);
+            double topMargin = Utils.General.TimespanToHeight(distanceFrom5AM);
             Margin = new Thickness(0, topMargin, 0, 0);
 
             // Duration
-            Height = Utils.TimespanToHeight(Description.Duration);
+            Height = Utils.General.TimespanToHeight(Description.Duration);
 
             // Title and description
             TitleTB.Text = Description.TitleText;
@@ -96,8 +96,8 @@ namespace CocoSchedule
 
         public void ApplySchedule()
         {
-            Margin = new Thickness(0, Utils.TimespanToHeight(Description.When - new TimeSpan(5, 0, 0)), 0, 0);
-            Height = Utils.TimespanToHeight(Description.Duration);
+            Margin = new Thickness(0, Utils.General.TimespanToHeight(Description.When - new TimeSpan(5, 0, 0)), 0, 0);
+            Height = Utils.General.TimespanToHeight(Description.Duration);
             JustResized();
         }
 
@@ -105,18 +105,18 @@ namespace CocoSchedule
         #region Thumb
         private bool IsResizingAllowed(double newSize)
         {
-            return newSize > Utils.TimespanToHeight(new TimeSpan(0, 4, 58)); // 5 minutes
+            return newSize > Utils.General.TimespanToHeight(new TimeSpan(0, 4, 58)); // 5 minutes
         }
 
         public void JustResized(bool north = false, bool noLabels = false)
         {
-            var startTime = Utils.HeightToTimespan(Margin.Top) + new TimeSpan(5, 0, 0);
+            var startTime = Utils.General.HeightToTimespan(Margin.Top) + new TimeSpan(5, 0, 0);
             var endTime = Description.Duration + startTime;
 
             if (startTime.Minutes != 0)
             {
                 AssociatedLabel1.Text = DateTime.Today.Add(startTime).ToString("hh:mm tt", CultureInfo.CreateSpecificCulture("en-US"));
-                AssociatedLabel1.Margin = new Thickness(0, Utils.TimespanToHeight(startTime - new TimeSpan(5, 0, 0)), 0, 0);
+                AssociatedLabel1.Margin = new Thickness(0, Utils.General.TimespanToHeight(startTime - new TimeSpan(5, 0, 0)), 0, 0);
                 if (!noLabels) AssociatedLabel1.Visibility = Visibility.Visible;
                 if (!noLabels) _showLabel1 = true;
             }
@@ -131,7 +131,7 @@ namespace CocoSchedule
                 if (endTime.Minutes != 0)
                 {
                     AssociatedLabel2.Text = DateTime.Today.Add(endTime).ToString("hh:mm tt", CultureInfo.CreateSpecificCulture("en-US"));
-                    AssociatedLabel2.Margin = new Thickness(0, Utils.TimespanToHeight(endTime - new TimeSpan(5, 0, 0)), 0, 0);
+                    AssociatedLabel2.Margin = new Thickness(0, Utils.General.TimespanToHeight(endTime - new TimeSpan(5, 0, 0)), 0, 0);
                     if (!noLabels) AssociatedLabel2.Visibility = Visibility.Visible;
                     if (!noLabels) _showLabel2 = true;
                 }
@@ -155,7 +155,7 @@ namespace CocoSchedule
                 var eventArgs = new CellResizedEventArgs(false, Description.When, Description.Duration);
 
                 Height = yadjust;
-                Description.Duration = Utils.HeightToTimespan(yadjust);
+                Description.Duration = Utils.General.HeightToTimespan(yadjust);
 
                 Resized?.Invoke(this, eventArgs);
             }
@@ -174,8 +174,8 @@ namespace CocoSchedule
             JustResized(true, false);
             var eventArgs = new CellResizedEventArgs(true, Description.When, Description.Duration);
 
-            Description.Duration = Utils.HeightToTimespan(Height);
-            Description.When = Utils.HeightToTimespan(Margin.Top) + new TimeSpan(5, 0, 0);
+            Description.Duration = Utils.General.HeightToTimespan(Height);
+            Description.When = Utils.General.HeightToTimespan(Margin.Top) + new TimeSpan(5, 0, 0);
 
             Resized?.Invoke(this, eventArgs);
         }
@@ -183,8 +183,8 @@ namespace CocoSchedule
 
         private void Thumb_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            Description.Duration = Utils.RoundTimespanToNearest(Description.Duration, new TimeSpan(0, 5, 0));
-            Description.When = Utils.RoundTimespanToNearest(Description.When, new TimeSpan(0, 5, 0));
+            Description.Duration = Utils.General.RoundTimespanToNearest(Description.Duration, new TimeSpan(0, 5, 0));
+            Description.When = Utils.General.RoundTimespanToNearest(Description.When, new TimeSpan(0, 5, 0));
             ApplySchedule();
 
             Resized?.Invoke(this, new CellResizedEventArgs(true, Description.When, Description.Duration));
@@ -199,7 +199,7 @@ namespace CocoSchedule
             // Edit button
             if (e.NewSize.Height > EditBTN.ActualHeight + EditBTN.Margin.Bottom)
             {
-                if (Utils.DetectCollisions(this, EditBTN, TitleViewbox))
+                if (Utils.General.DetectCollisions(this, EditBTN, TitleViewbox))
                 {
                     _allowEditBtn = false;
                     EditBTN.Visibility = Visibility.Hidden; // Hide directly on resize
@@ -244,7 +244,7 @@ namespace CocoSchedule
             _dragging = false;
 
             // Apply new schedule
-            Description.When = Utils.RoundTimespanToNearest(Description.When, new TimeSpan(0, 5, 0));
+            Description.When = Utils.General.RoundTimespanToNearest(Description.When, new TimeSpan(0, 5, 0));
             ApplySchedule();
         }
 
@@ -268,7 +268,7 @@ namespace CocoSchedule
                 JustResized();
                 Resized?.Invoke(this, new CellResizedEventArgs(deltaDirection > 0, Description.When, Description.Duration));
 
-                Description.When = Utils.HeightToTimespan(Margin.Top) + new TimeSpan(5, 0, 0);
+                Description.When = Utils.General.HeightToTimespan(Margin.Top) + new TimeSpan(5, 0, 0);
 
                 currentPositionX = e.GetPosition(Application.Current.MainWindow).Y;
             }

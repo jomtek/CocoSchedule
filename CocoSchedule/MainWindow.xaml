@@ -42,11 +42,11 @@
             </StackPanel.Background>
 
             <Grid x:Name="LastWeekBTN" Background="Transparent" Margin="5,0,0,0" Height="35" Width="35" VerticalAlignment="Center" Cursor="Hand"
-                  MouseEnter="LastWeekBTN_MouseEnter" MouseLeave="LastWeekBTN_MouseLeave">
+                  MouseEnter="LastWeekBTN_MouseEnter" MouseLeave="LastWeekBTN_MouseLeave" ToolTip="Last week" PreviewMouseLeftButtonUp="LastWeekBTN_PreviewMouseLeftButtonUp">
                 <Path Style="{StaticResource SkipLeft_Path}" Stretch="Fill" IsEnabled="False" Fill="Black" Margin="1.5" VerticalAlignment="Center" HorizontalAlignment="Center" />
             </Grid>
             <Grid x:Name="NextWeekBTN" Background="Transparent" Margin="5,0,0,0" Height="35" Width="35" VerticalAlignment="Center" Cursor="Hand"
-                  MouseEnter="NextWeekBTN_MouseEnter" MouseLeave="NextWeekBTN_MouseLeave">
+                  MouseEnter="NextWeekBTN_MouseEnter" MouseLeave="NextWeekBTN_MouseLeave" ToolTip="Next week" PreviewMouseLeftButtonUp="NextWeekBTN_PreviewMouseLeftButtonUp">
                 <Path Style="{StaticResource SkipRight_Path}" Stretch="Fill" IsEnabled="False" Fill="Black" Margin="1.5" VerticalAlignment="Center" HorizontalAlignment="Center" />
             </Grid>
         </StackPanel>

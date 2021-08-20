@@ -199,7 +199,8 @@
     <Compile Include="Forms\TaskInformationWindow.xaml.cs">
       <DependentUpon>TaskInformationWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils.cs" />
+    <Compile Include="Utils\General.cs" />
+    <Compile Include="Utils\Serialization.cs" />
     <Page Include="Cell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

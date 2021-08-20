@@ -9,6 +9,11 @@ namespace CocoSchedule
 {
     public static class GlobalInfo
     {
+        // ONE day [associated with] a list of tasks
+        public static Dictionary<DateTime, List<TaskDescription>> Calendar =
+            new Dictionary<DateTime, List<TaskDescription>>();
+
+        // Design-specific (ok, maybe not entirely, but I don't care)
         public static double HourHeight;
         public static Dictionary<TaskColor, string> TaskColorResKeys = new Dictionary<TaskColor, string>()
         {
