@@ -371,7 +371,7 @@ namespace CocoSchedule
             };
 
             c.ConfigureDisplay(true);
-            c.JustResized();
+            c.JustResized(false, false, true);
         }
         #endregion
 
@@ -410,15 +410,15 @@ namespace CocoSchedule
                     tasks.Add(cell.Description);
                 }
 
-                if (!GlobalInfo.Calendar.ContainsKey(currentIterDay))
+                if (GlobalInfo.Calendar.ContainsKey(currentIterDay))
                 {
-                    // TODO: I am adding days by groups of 7. And showing them so. Can't I break here ? 
-                    GlobalInfo.Calendar.Add(currentIterDay, tasks);
+                    GlobalInfo.Calendar.Remove(currentIterDay);
                 }
+
+                GlobalInfo.Calendar.Add(currentIterDay, tasks);
 
                 currentIterDay = currentIterDay.AddDays(1);
             }
-            Console.WriteLine("a");
         }
 
         private void FillTableWithCalendarInfo()

@@ -108,7 +108,7 @@ namespace CocoSchedule
             return newSize > Utils.General.TimespanToHeight(new TimeSpan(0, 4, 58)); // 5 minutes
         }
 
-        public void JustResized(bool north = false, bool noLabels = false)
+        public void JustResized(bool north = false, bool noLabels = false, bool hideLabels = false)
         {
             var startTime = Utils.General.HeightToTimespan(Margin.Top) + new TimeSpan(5, 0, 0);
             var endTime = Description.Duration + startTime;
@@ -117,7 +117,7 @@ namespace CocoSchedule
             {
                 AssociatedLabel1.Text = DateTime.Today.Add(startTime).ToString("hh:mm tt", CultureInfo.CreateSpecificCulture("en-US"));
                 AssociatedLabel1.Margin = new Thickness(0, Utils.General.TimespanToHeight(startTime - new TimeSpan(5, 0, 0)), 0, 0);
-                if (!noLabels) AssociatedLabel1.Visibility = Visibility.Visible;
+                if (!noLabels && !hideLabels) AssociatedLabel1.Visibility = Visibility.Visible;
                 if (!noLabels) _showLabel1 = true;
             }
             else
@@ -132,7 +132,7 @@ namespace CocoSchedule
                 {
                     AssociatedLabel2.Text = DateTime.Today.Add(endTime).ToString("hh:mm tt", CultureInfo.CreateSpecificCulture("en-US"));
                     AssociatedLabel2.Margin = new Thickness(0, Utils.General.TimespanToHeight(endTime - new TimeSpan(5, 0, 0)), 0, 0);
-                    if (!noLabels) AssociatedLabel2.Visibility = Visibility.Visible;
+                    if (!noLabels && !hideLabels) AssociatedLabel2.Visibility = Visibility.Visible;
                     if (!noLabels) _showLabel2 = true;
                 }
                 else
@@ -307,7 +307,22 @@ namespace CocoSchedule
         }
         private void DeleteTaskItem_Click(object sender, RoutedEventArgs e)
         {
+            Opacity = 0.75;
 
+            var dialog = MessageBox.Show(
+                "Are you sure to delete this task ?",
+                "CocoSchedule - Confirm",
+                MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (dialog == MessageBoxResult.Yes)
+            {
+                var parentDayGrid = (Grid)Parent;
+                parentDayGrid.Children.Remove(this);
+            }
+            else
+            {
+                Opacity = 1;
+            }
         }
         #endregion
         #endregion
