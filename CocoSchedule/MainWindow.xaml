@@ -52,7 +52,7 @@
         </StackPanel>
 
         <!-- Table -->
-        <ScrollViewer x:Name="MainSV" Margin="15,10,15,15" Background="Black">
+        <ScrollViewer x:Name="MainSV" Margin="15,10,15,15" Background="Black" PreviewMouseWheel="MainSV_PreviewMouseWheel">
             <Grid x:Name="TimeTableGrid" Background="#FFEAEAEA">
                 <Grid.Effect>
                     <DropShadowEffect BlurRadius="8" Opacity="0.4" ShadowDepth="4"/>

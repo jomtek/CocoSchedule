@@ -499,5 +499,23 @@ namespace CocoSchedule
             Utils.Serialization.Serialize(GlobalInfo.Calendar, "calendar.ser");
         }
         #endregion
+
+        private async void MainSV_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (Keyboard.Modifiers != ModifierKeys.Control)
+                return;
+
+            if (e.Delta > 0)
+            {
+                TimeTableGrid.Height = TimeTableGrid.ActualHeight * 1.25;
+            }
+            else if (e.Delta < 0)
+            {
+                TimeTableGrid.Height = TimeTableGrid.ActualHeight * (1 / 1.25);
+            }
+
+            await Task.Delay(10);
+            RefreshAll();
+        }
     }
 }
