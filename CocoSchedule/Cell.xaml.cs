@@ -56,59 +56,12 @@ namespace CocoSchedule
         {
             InitializeComponent();
 
-            MouseEnter += (object sender, MouseEventArgs e) =>
-            {
-                if (_showLabel1) AssociatedLabel1.Visibility = Visibility.Visible;
-                if (_showLabel2) AssociatedLabel2.Visibility = Visibility.Visible;
-            };
-
-            MouseLeave += (object sender, MouseEventArgs e) =>
-            {
-                AssociatedLabel1.Visibility = Visibility.Hidden;
-                AssociatedLabel2.Visibility = Visibility.Hidden;
-            };
-
             Description = description;
             ConfigureDisplay(true);
         }
 
-        public void ConfigureDisplay(bool init = false)
-        {
-            // When
-            TimeSpan distanceFrom5AM = Description.When - new TimeSpan(5, 0, 0);
-            double topMargin = Utils.General.TimespanToHeight(distanceFrom5AM);
-            Margin = new Thickness(0, topMargin, 0, 0);
-
-            // Duration
-            Height = Utils.General.TimespanToHeight(Description.Duration);
-
-            // Title and description
-            TitleTB.Text = Description.TitleText;
-            DescTB.Text = Description.DescriptionText;
-            BorderComponent.Background = (Brush)App.Current.Resources[GlobalInfo.TaskColorResKeys[Description.Color]];
-
-            // Time indicators
-            if (!init)
-            {
-                JustResized(false, true);
-            }
-        }
-
-        public void ApplySchedule()
-        {
-            Margin = new Thickness(0, Utils.General.TimespanToHeight(Description.When - new TimeSpan(5, 0, 0)), 0, 0);
-            Height = Utils.General.TimespanToHeight(Description.Duration);
-            JustResized();
-        }
-
-        #region Resize
-        #region Thumb
-        private bool IsResizingAllowed(double newSize)
-        {
-            return newSize > Utils.General.TimespanToHeight(new TimeSpan(0, 4, 58)); // 5 minutes
-        }
-
-        public void JustResized(bool north = false, bool noLabels = false, bool hideLabels = false)
+        #region Labels
+        public void UpdateLabels(bool north = false, bool noLabels = false, bool hideLabels = false)
         {
             var startTime = Utils.General.HeightToTimespan(Margin.Top) + new TimeSpan(5, 0, 0);
             var endTime = Description.Duration + startTime;
@@ -142,42 +95,91 @@ namespace CocoSchedule
                 }
             }
         }
+        #endregion
+
+        public void ConfigureDisplay(bool init = false)
+        {
+            // When
+            TimeSpan distanceFrom5AM = Description.When - new TimeSpan(5, 0, 0);
+            double topMargin = Utils.General.TimespanToHeight(distanceFrom5AM);
+            Margin = new Thickness(0, topMargin, 0, 0);
+
+            // Duration
+            Height = Utils.General.TimespanToHeight(Description.Duration);
+
+            // Title and description
+            TitleTB.Text = Description.TitleText;
+            DescTB.Text = Description.DescriptionText;
+            BorderComponent.Background = (Brush)App.Current.Resources[GlobalInfo.TaskColorResKeys[Description.Color]];
+
+            // Time indicators
+            if (!init)
+            {
+                UpdateLabels(false, true);
+            }
+        }
+
+        public void ApplySchedule()
+        {
+            Margin = new Thickness(0, Utils.General.TimespanToHeight(Description.When - new TimeSpan(5, 0, 0)), 0, 0);
+            Height = Utils.General.TimespanToHeight(Description.Duration);
+            UpdateLabels();
+        }
+
+        #region Resize
+        #region Thumb
+        private bool IsResizingAllowed(double newSize)
+        {
+            return newSize > Utils.General.TimespanToHeight(new TimeSpan(0, 4, 58)); // 5 minutes
+        }
 
         #region South
-        private void southThumb_OnDragDelta(object sender, DragDeltaEventArgs e)
+        private void SouthThumb_OnDragDelta(object sender, DragDeltaEventArgs e)
         {
             double yadjust = Height + e.VerticalChange;
             if (yadjust >= 0)
             {
-                if (!IsResizingAllowed(yadjust)) return;
-                
-                JustResized();
-                var eventArgs = new CellResizedEventArgs(false, Description.When, Description.Duration);
+                if (!IsResizingAllowed(yadjust))
+                    return;
 
-                Height = yadjust;
-                Description.Duration = Utils.General.HeightToTimespan(yadjust);
+                var desiredDuration = Utils.General.HeightToTimespan(yadjust);
+                if (((MainWindow)App.Current.MainWindow).CheckLogic(this, Description.When, desiredDuration))
+                {
+                    UpdateLabels();
+                    var eventArgs = new CellResizedEventArgs(false, Description.When, Description.Duration);
 
-                Resized?.Invoke(this, eventArgs);
+                    Height = yadjust;
+                    Description.Duration = desiredDuration;
+
+                    Resized?.Invoke(this, eventArgs);
+                }
             }
         }
-
-        private void southThumb_MouseEnter(object sender, MouseEventArgs e) { Cursor = Cursors.SizeNS; }
-        private void southThumb_MouseLeave(object sender, MouseEventArgs e) { Cursor = Cursors.Arrow;  }
         #endregion
+
         #region North
-        private void northThumb_DragDelta(object sender, DragDeltaEventArgs e)
+        private void NorthThumb_DragDelta(object sender, DragDeltaEventArgs e)
         {
-            if (!IsResizingAllowed(Height - e.VerticalChange)) return;
-            Height -= e.VerticalChange;
-            Margin = new Thickness(Margin.Left, Margin.Top + e.VerticalChange, Margin.Right, Margin.Bottom);
+            if (!IsResizingAllowed(Height - e.VerticalChange))
+                return;
 
-            JustResized(true, false);
-            var eventArgs = new CellResizedEventArgs(true, Description.When, Description.Duration);
+            var desiredMargin = new Thickness(Margin.Left, Margin.Top + e.VerticalChange, Margin.Right, Margin.Bottom);
+            var desiredTime = Utils.General.HeightToTimespan(Margin.Top) + new TimeSpan(5, 0, 0);
+            var desiredHeight = Height - e.VerticalChange;
+            var desiredDuration = Utils.General.HeightToTimespan(desiredHeight);
 
-            Description.Duration = Utils.General.HeightToTimespan(Height);
-            Description.When = Utils.General.HeightToTimespan(Margin.Top) + new TimeSpan(5, 0, 0);
+            if (((MainWindow)App.Current.MainWindow).CheckLogic(this, desiredTime, desiredDuration))
+            {
+                Margin = desiredMargin;
+                Height = desiredHeight;
+                Description.When = desiredTime;
+                Description.Duration = desiredDuration;
 
-            Resized?.Invoke(this, eventArgs);
+                UpdateLabels(true, false);
+
+                var eventArgs = new CellResizedEventArgs(true, Description.When, Description.Duration);
+                Resized?.Invoke(this, eventArgs);
+            }
         }
         #endregion
 
@@ -192,10 +194,8 @@ namespace CocoSchedule
         #endregion
 
         #region Display
-        private void userControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            // TODO: make the limit values non-arbitrary
-
             // Edit button
             if (e.NewSize.Height > EditBTN.ActualHeight + EditBTN.Margin.Bottom)
             {
@@ -230,17 +230,17 @@ namespace CocoSchedule
 
         #region Drag
         private bool _dragging = false;
-        private double currentPositionX;
+        private double _relativeCursorPosY;
 
         private void DragGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            currentPositionX = e.GetPosition(Application.Current.MainWindow).Y;
+            _relativeCursorPosY = e.GetPosition(Application.Current.MainWindow).Y;
             _dragging = true;
         }
         
         private void DragGrid_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            currentPositionX = 0;
+            _relativeCursorPosY = 0;
             _dragging = false;
 
             // Apply new schedule
@@ -252,25 +252,22 @@ namespace CocoSchedule
         {
             if (_dragging && e.LeftButton == MouseButtonState.Pressed)
             {
-                double deltaDirection = currentPositionX - e.GetPosition(Application.Current.MainWindow).Y;
-
-                // Same code in both cases, I know
-                if (deltaDirection > 0) // Mouse moves towards top
-                {
-                    Margin = new Thickness(Margin.Left, Margin.Top - deltaDirection, Margin.Right, Margin.Bottom);
-
-                }
-                else // Mouse moves towards bottom
-                {
-                    Margin = new Thickness(Margin.Left, Margin.Top - deltaDirection, Margin.Right, Margin.Bottom);
-                }
+                double deltaDirection =
+                    _relativeCursorPosY - e.GetPosition(Application.Current.MainWindow).Y;
                 
-                JustResized();
-                Resized?.Invoke(this, new CellResizedEventArgs(deltaDirection > 0, Description.When, Description.Duration));
+                var desiredMargin = new Thickness(Margin.Left, Margin.Top - deltaDirection, Margin.Right, Margin.Bottom);
+                var desiredTime = Utils.General.HeightToTimespan(Margin.Top) + new TimeSpan(5, 0, 0);
 
-                Description.When = Utils.General.HeightToTimespan(Margin.Top) + new TimeSpan(5, 0, 0);
+                if (((MainWindow)App.Current.MainWindow).CheckLogic(this, desiredTime, Description.Duration))
+                {
+                    Margin = desiredMargin;
+                    Description.When = desiredTime;
+                    UpdateLabels();
 
-                currentPositionX = e.GetPosition(Application.Current.MainWindow).Y;
+                    Resized?.Invoke(this, new CellResizedEventArgs(deltaDirection > 0, Description.When, Description.Duration));
+                }
+
+                _relativeCursorPosY = e.GetPosition(Application.Current.MainWindow).Y;
             }
         }
         #endregion
@@ -290,16 +287,26 @@ namespace CocoSchedule
             ShowTaskEditor();
         }
 
-        private void userControl_MouseEnter(object sender, MouseEventArgs e)
+        private void UserControl_MouseEnter(object sender, MouseEventArgs e)
         {
             if (_allowEditBtn) EditBTN.Visibility = Visibility.Visible;
+            if (_showLabel1) AssociatedLabel1.Visibility = Visibility.Visible;
+            if (_showLabel2) AssociatedLabel2.Visibility = Visibility.Visible;
         }
 
-        private void userControl_MouseLeave(object sender, MouseEventArgs e)
+        private void UserControl_MouseLeave(object sender, MouseEventArgs e)
         {
             EditBTN.Visibility = Visibility.Hidden;
+            AssociatedLabel1.Visibility = Visibility.Hidden;
+            AssociatedLabel2.Visibility = Visibility.Hidden;
+
+            if (_dragging)
+            {
+                DragGrid_MouseUp(null, null);
+            }
         }
         #endregion
+
         #region Context Menu
         private void EditTaskItem_Click(object sender, RoutedEventArgs e)
         {

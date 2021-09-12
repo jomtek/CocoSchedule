@@ -181,6 +181,24 @@ namespace CocoSchedule
             await Task.Delay(10);
             RefreshAll();
         }
+
+        private async void MainSV_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (Keyboard.Modifiers != ModifierKeys.Control)
+                return;
+
+            if (e.Delta > 0)
+            {
+                TimeTableGrid.Height = TimeTableGrid.ActualHeight * 1.25;
+            }
+            else if (e.Delta < 0)
+            {
+                TimeTableGrid.Height = TimeTableGrid.ActualHeight * (1 / 1.25);
+            }
+
+            await Task.Delay(10);
+            RefreshAll();
+        }
         #endregion
 
         #region Cells
@@ -289,90 +307,6 @@ namespace CocoSchedule
             _lastClickedY = e.GetPosition(TableGrid).Y;
         }
         #endregion
-        #endregion
-
-        #region Temp
-        private void InitCell(Cell c)
-        {
-            c.HorizontalAlignment = HorizontalAlignment.Stretch;
-            c.Width = Double.NaN;
-
-            var lbl1 = new TextBlock()
-            {
-                Text = "0 AM",
-                Margin = new Thickness(0, 0, 15, 0),
-                FontSize = 15,
-                Opacity = 0.75,
-                Visibility = Visibility.Hidden,
-            };
-
-            var lbl2 = new TextBlock()
-            {
-                Text = lbl1.Text,
-                Margin = lbl1.Margin,
-                FontSize = lbl1.FontSize,
-                Opacity = lbl1.Opacity,
-                Visibility = lbl1.Visibility,
-            };
-
-            c.AssociatedLabel1 = lbl1;
-            c.AssociatedLabel2 = lbl2;
-            OtherTimeAnnotationsGrid.Children.Add(lbl1);
-            OtherTimeAnnotationsGrid.Children.Add(lbl2);
-
-            c.MouseEnter += (object sender_, MouseEventArgs __) =>
-            {
-                MoveTimeIndicators(c);
-            };
-
-            c.Resized += (object sender_, CellResizedEventArgs e) =>
-            {
-                foreach (KeyValuePair<DayOfWeek, Grid> entry in _daysGrids)
-                {
-                    if (c.Description.Day == entry.Key)
-                    {
-                        bool collision = new Func<bool>(() =>
-                        {
-                            foreach (Cell candidateCell in entry.Value.Children)
-                            {
-                                if (candidateCell.Description.When == c.Description.When) continue; // Ignore self
-
-                                if (Utils.General.CheckTimespanOverlap(
-                                    c.Description.When, c.Description.When + c.Description.Duration,
-                                    candidateCell.Description.When, candidateCell.Description.When + candidateCell.Description.Duration))
-                                {
-                                    return true;
-                                }
-                            }
-
-                            return false;
-                        })();
-
-                        if (collision)
-                        {
-                            c.Description.When = e.InitialWhen;
-                            c.Description.Duration = e.InitialDuration;
-                            c.ApplySchedule();
-
-                            return;
-                        }
-                    }
-                }
-
-                MoveTimeIndicators(c, e.North);
-            };
-
-            c.MouseLeave += (object sender_, MouseEventArgs __) =>
-            {
-                var cell = (Cell)sender_;
-
-                TimeIndicationPath1.Visibility = Visibility.Hidden;
-                TimeIndicationPath2.Visibility = Visibility.Hidden;
-            };
-
-            c.ConfigureDisplay(true);
-            c.JustResized(false, false, true);
-        }
         #endregion
 
         #region Tool Menu
@@ -500,22 +434,81 @@ namespace CocoSchedule
         }
         #endregion
 
-        private async void MainSV_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        #region Cell logic
+        public bool CheckLogic(Cell cell, TimeSpan desiredTime, TimeSpan desiredDuration)
         {
-            if (Keyboard.Modifiers != ModifierKeys.Control)
-                return;
-
-            if (e.Delta > 0)
+            foreach (KeyValuePair<DayOfWeek, Grid> entry in _daysGrids)
             {
-                TimeTableGrid.Height = TimeTableGrid.ActualHeight * 1.25;
-            }
-            else if (e.Delta < 0)
-            {
-                TimeTableGrid.Height = TimeTableGrid.ActualHeight * (1 / 1.25);
+                if (cell.Description.Day == entry.Key)
+                {
+                    foreach (Cell candidateCell in entry.Value.Children)
+                    {
+                        if (candidateCell.Description.When == cell.Description.When) continue; // Ignore self
+
+                        if (Utils.General.CheckTimespanOverlap(
+                            desiredTime, desiredTime + cell.Description.Duration,
+                            candidateCell.Description.When, candidateCell.Description.When + candidateCell.Description.Duration))
+                        {
+                            return false;
+                        }
+                    }
+
+                    break;
+                }
             }
 
-            await Task.Delay(10);
-            RefreshAll();
+            return true;
+        }
+        #endregion
+
+        private void InitCell(Cell c)
+        {
+            c.HorizontalAlignment = HorizontalAlignment.Stretch;
+            c.Width = Double.NaN;
+
+            var lbl1 = new TextBlock()
+            {
+                Text = "0 AM",
+                Margin = new Thickness(0, 0, 15, 0),
+                FontSize = 15,
+                Opacity = 0.75,
+                Visibility = Visibility.Hidden,
+            };
+
+            var lbl2 = new TextBlock()
+            {
+                Text = lbl1.Text,
+                Margin = lbl1.Margin,
+                FontSize = lbl1.FontSize,
+                Opacity = lbl1.Opacity,
+                Visibility = lbl1.Visibility,
+            };
+
+            c.AssociatedLabel1 = lbl1;
+            c.AssociatedLabel2 = lbl2;
+            OtherTimeAnnotationsGrid.Children.Add(lbl1);
+            OtherTimeAnnotationsGrid.Children.Add(lbl2);
+
+            c.MouseEnter += (object sender_, MouseEventArgs __) =>
+            {
+                MoveTimeIndicators(c);
+            };
+
+            c.Resized += (object sender_, CellResizedEventArgs e) =>
+            {
+                MoveTimeIndicators(c, e.North);
+            };
+
+            c.MouseLeave += (object sender_, MouseEventArgs __) =>
+            {
+                var cell = (Cell)sender_;
+
+                TimeIndicationPath1.Visibility = Visibility.Hidden;
+                TimeIndicationPath2.Visibility = Visibility.Hidden;
+            };
+
+            c.ConfigureDisplay(true);
+            c.UpdateLabels(false, false, true);
         }
     }
 }

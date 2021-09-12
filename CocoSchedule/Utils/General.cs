@@ -70,8 +70,6 @@ namespace CocoSchedule.Utils
         #endregion
 
         #region Other
-        // TODO: sort this out
-
         public static void RearrangeDays(int first, ref Grid container)
         {
             // Copy the items to a temporary list
@@ -83,7 +81,6 @@ namespace CocoSchedule.Utils
 
             container.Children.Clear();
 
-
             int counter = 0;
             foreach (UIElement day in elems)
             {
@@ -92,7 +89,6 @@ namespace CocoSchedule.Utils
                 counter++;
             }
         }
-
         #endregion
     }
 }
